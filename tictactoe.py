@@ -180,7 +180,7 @@ def runCompMove(computer, board):
     board.increaseFillCount(random.randint(0,8), computer)
     return
   else:
-    move = minimax(board, depth, computer)
+    move, score = minimax(board, depth, computer)
     print(str(move))
     board.increaseFillCount(move, computer)
 
@@ -197,21 +197,23 @@ def minimax(board, depth, player):
   current_state = board.checkSimulation("X")
   
   if depth == 0 or current_state == "X" or current_state == "O":
-    return -1
+    return bestMove, values[current_state]
   
   emptyPos = board.returnEmptyPositions()
   for pos in emptyPos:
     board.increaseFillCount(pos, player)
-    score = minimax(board, depth - 1, next_player)
+    move, score = minimax(board, depth - 1, next_player)
     board.decreaseFillCount(pos)
 
     if player == "X":
       if score > bestScore:
+        bestScore = score
         bestMove = pos
     else:
       if score < bestScore:
+        bestScore = score
         bestMove = pos
-  return bestMove
+  return bestMove, bestScore
 
 def playVsComputer(board):
     player = "O"
