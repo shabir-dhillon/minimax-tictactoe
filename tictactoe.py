@@ -14,29 +14,29 @@ class T3Board:
     def checkForWin(self):
         if (self.board[0] == self.board[1]
                 and self.board[0] == self.board[2]) and self.board[0] != " ":
-            return True
+            return [self.board[0],True]
         if self.board[3] == self.board[4] and self.board[3] == self.board[
                 5] and self.board[3] != " ":
-            return True
+            return [self.board[3],True]
         if self.board[6] == self.board[7] and self.board[6] == self.board[
                 8] and self.board[6] != " ":
-            return True
+            return [self.board[6],True]
         if self.board[0] == self.board[4] and self.board[0] == self.board[
                 8] and self.board[0] != " ":
-            return True
+            return [self.board[0],True]
         if self.board[0] == self.board[3] and self.board[0] == self.board[
                 6] and self.board[0] != " ":
-            return True
+            return [self.board[0],True]
         if self.board[1] == self.board[4] and self.board[1] == self.board[
                 7] and self.board[1] != " ":
-            return True
+            return [self.board[1],True]
         if self.board[2] == self.board[5] and self.board[2] == self.board[
                 8] and self.board[2] != " ":
-            return True
+            return [self.board[2],True]
         if self.board[2] == self.board[4] and self.board[2] == self.board[
                 6] and self.board[2] != " ":
-            return True
-        return False
+            return [self.board[2],True]
+        return [-1, False]
 
     def checkSimulation(self, computer):
         if (self.board[0] == self.board[1] and self.board[0] == self.board[2]):
@@ -132,6 +132,17 @@ def getSymbol():
 def printBoard(board):
     count = 1
     line = ""
+    depth = len(board.returnEmptyPositions())
+    if depth == 9:
+      for sp in range(1,10):
+        if count % 3 == 0:
+            line += str(sp)
+            print(line)
+            line = ""
+        else:
+            line += str(sp) + " | "
+        count += 1
+      return
     for sp in board.board:
         if count % 3 == 0:
             line += sp
@@ -158,8 +169,9 @@ def validateMove(pos):
 
 
 def checkGameStatus(player, board):
-    if board.checkForWin():
-        print("Game over win condition satisified for X or O")
+    player, status = board.checkForWin()
+    if status:
+        print(player + " has won the game!")
         new_board = T3Board()
         mainMenu(new_board)
     elif board.isBoardFilled():
@@ -174,9 +186,8 @@ def runCompMove(computer, board):
   if depth == 0 or checkGameStatus(computer, board):
     return
   if depth == 9:
-    x = random.randint(0,8)
-    print(str(x))
-    board.increaseFillCount(x, computer)
+    move = random.randint(0,8)
+    board.increaseFillCount(move, computer)
     return
   else:
     move, score = minimax(board, depth, computer)
