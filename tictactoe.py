@@ -1,8 +1,7 @@
 """
-x Create Board
-x Logic to switch empty pieces with symbol
-x compute moves to fill squares
-x compute moves to check for winner
+X is the Computer and O is the player
+Computer always goes first
+The main functions of the game are playVsComputer, runCompMove and minimax
 """
 import random
 from math import inf as infinity 
@@ -48,12 +47,12 @@ class T3Board:
         if self.board[3] == self.board[4] and self.board[3] == self.board[5]:
             if self.board[3] == computer:
                 return "X"
-            elif self.board[0] == "O":
+            elif self.board[3] == "O":
                 return "O"
         if self.board[6] == self.board[7] and self.board[6] == self.board[8]:
             if self.board[6] == computer:
                 return "X"
-            elif self.board[0] == "O":
+            elif self.board[6] == "O":
                 return "O"
         if self.board[0] == self.board[4] and self.board[0] == self.board[8]:
             if self.board[0] == computer:
@@ -68,24 +67,22 @@ class T3Board:
         if self.board[1] == self.board[4] and self.board[1] == self.board[7]:
             if self.board[1] == computer:
                 return "X"
-            elif self.board[0] == "O":
+            elif self.board[1] == "O":
                 return "O"
         if self.board[2] == self.board[5] and self.board[2] == self.board[8]:
             if self.board[2] == computer:
                 return "X"
-            elif self.board[0] == "O":
+            elif self.board[2] == "O":
                 return "O"
         if self.board[2] == self.board[4] and self.board[2] == self.board[6]:
             if self.board[2] == computer:
                 return "X"
-            elif self.board[0] == "O":
+            elif self.board[2] == "O":
                 return "O"
         if self.fillCount == 9:
             return "tie"
         return None
 
-    def drawSimulated(self):
-        return self.fillCount == 9
 
     def isBoardFilled(self):
         return self.fillCount == 9
@@ -177,11 +174,12 @@ def runCompMove(computer, board):
   if depth == 0 or checkGameStatus(computer, board):
     return
   if depth == 9:
-    board.increaseFillCount(random.randint(0,8), computer)
+    x = random.randint(0,8)
+    print(str(x))
+    board.increaseFillCount(x, computer)
     return
   else:
     move, score = minimax(board, depth, computer)
-    print(str(move))
     board.increaseFillCount(move, computer)
 
 def minimax(board, depth, player):
